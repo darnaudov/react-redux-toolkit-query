@@ -14,7 +14,9 @@ function Products() {
           <div>
             {product.name} {product.price}
             <button
-              onClick={() => dispatch(addProductToCart({ ...product, qty: 0 }))}
+              onClick={() =>
+                dispatch(addProductToCart({ productId: product.id }))
+              }
             >
               Add
             </button>

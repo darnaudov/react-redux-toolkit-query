@@ -4,18 +4,21 @@ import {
   addProductToCart,
   removeProductFromCart,
 } from 'redux/slices/cartItems';
+import { selectProductEntities } from 'redux/slices/products';
 
 function CartItems() {
   const cartItems = useAppSelector(selectAllCartItems);
+  const products = useAppSelector(selectProductEntities);
   const dispatch = useAppDispatch();
 
   return (
     <div>
       CartItems
       {cartItems.map((item) => {
+        const product = products[item.productId]!;
         return (
           <div>
-            {item.name} {item.price} {item.qty}
+            {product.name} {product.price} {item.qty}
             <button onClick={() => dispatch(removeProductFromCart(item))}>
               -
             </button>
@@ -26,7 +29,8 @@ function CartItems() {
       <div>
         Total Price:{' '}
         {cartItems.reduce((totalPrice, item) => {
-          return totalPrice + item.qty * item.price;
+          const product = products[item.productId]!;
+          return totalPrice + item.qty * product.price;
         }, 0)}
       </div>
     </div>
