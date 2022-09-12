@@ -1,12 +1,12 @@
 import { useAppSelector, useAppDispatch } from 'redux/hooks';
 import {
-  getCartItems,
+  selectAllCartItems,
   addProductToCart,
   removeProductFromCart,
 } from 'redux/slices/cartItems';
 
 function CartItems() {
-  const cartItems = useAppSelector(getCartItems);
+  const cartItems = useAppSelector(selectAllCartItems);
   const dispatch = useAppDispatch();
 
   return (

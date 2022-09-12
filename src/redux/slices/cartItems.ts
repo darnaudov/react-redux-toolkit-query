@@ -1,4 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createEntityAdapter,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import { Product } from 'redux/slices/products';
 import { RootState } from 'redux/store';
 
@@ -6,34 +10,35 @@ export interface CartItem extends Product {
   qty: number;
 }
 
-export type CartItems = Array<CartItem>;
-
-const initialState: CartItems = [];
+export const cartItemsAdapter = createEntityAdapter<CartItem>();
+const initialState = cartItemsAdapter.getInitialState();
 
 export const cartItemsSlice = createSlice({
   name: 'cartItems',
   initialState,
   reducers: {
     addProductToCart: (state, action: PayloadAction<CartItem>) => {
-      const existingItem = state.find(
-        (item) => item.name === action.payload.name
-      );
+      const existingItem = state.entities[action.payload.id];
 
+      let newQty = 1;
       if (existingItem) {
-        existingItem.qty = existingItem.qty + 1;
-      } else {
-        state.push({ ...action.payload, qty: action.payload.qty + 1 });
+        newQty = existingItem.qty + 1;
       }
+
+      cartItemsAdapter.upsertOne(state, {
+        ...action.payload,
+        qty: newQty,
+      });
     },
     removeProductFromCart: (state, action: PayloadAction<CartItem>) => {
-      return state
-        .map((item) => {
-          if (item.name === action.payload.name) {
-            return { ...item, qty: item.qty - 1 };
-          }
-          return item;
-        })
-        .filter((item) => item.qty > 0);
+      if (action.payload.qty === 1) {
+        cartItemsAdapter.removeOne(state, action.payload.id);
+      } else {
+        cartItemsAdapter.upsertOne(state, {
+          ...action.payload,
+          qty: action.payload.qty - 1,
+        });
+      }
     },
   },
 });
@@ -41,6 +46,12 @@ export const cartItemsSlice = createSlice({
 export const { addProductToCart, removeProductFromCart } =
   cartItemsSlice.actions;
 
-export const getCartItems = (state: RootState) => state.cartItems;
+export const {
+  selectAll: selectAllCartItems,
+  selectById: selectCartItemById,
+  selectEntities: selectCartItemEntities,
+  selectIds: selectCartItemIds,
+  selectTotal: selectTotalCartItems,
+} = cartItemsAdapter.getSelectors((state: RootState) => state.cartItems);
 
 export default cartItemsSlice.reducer;
