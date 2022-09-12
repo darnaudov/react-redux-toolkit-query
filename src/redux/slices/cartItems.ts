@@ -10,10 +10,6 @@ export interface CartItem {
   qty: number;
 }
 
-export interface Action {
-  productId: number;
-}
-
 export const cartItemsAdapter = createEntityAdapter<CartItem>({
   selectId: (cartItem) => cartItem.productId,
 });
@@ -23,8 +19,8 @@ export const cartItemsSlice = createSlice({
   name: 'cartItems',
   initialState,
   reducers: {
-    addProductToCart: (state, action: PayloadAction<Action>) => {
-      const existingItem = state.entities[action.payload.productId];
+    addProductToCart: (state, action: PayloadAction<number>) => {
+      const existingItem = state.entities[action.payload];
 
       let newQty = 1;
       if (existingItem) {
@@ -32,19 +28,19 @@ export const cartItemsSlice = createSlice({
       }
 
       cartItemsAdapter.upsertOne(state, {
-        ...action.payload,
+        productId: action.payload,
         qty: newQty,
       });
     },
-    removeProductFromCart: (state, action: PayloadAction<Action>) => {
-      const existingItem = state.entities[action.payload.productId];
+    removeProductFromCart: (state, action: PayloadAction<number>) => {
+      const existingItem = state.entities[action.payload];
 
       if (existingItem) {
         if (existingItem.qty === 1) {
-          cartItemsAdapter.removeOne(state, action.payload.productId);
+          cartItemsAdapter.removeOne(state, action.payload);
         } else {
           cartItemsAdapter.upsertOne(state, {
-            ...action.payload,
+            productId: action.payload,
             qty: existingItem.qty - 1,
           });
         }

@@ -11,13 +11,9 @@ function Products() {
       Products
       {products.map((product) => {
         return (
-          <div>
+          <div key={product.id}>
             {product.name} {product.price}
-            <button
-              onClick={() =>
-                dispatch(addProductToCart({ productId: product.id }))
-              }
-            >
+            <button onClick={() => dispatch(addProductToCart(product.id))}>
               Add
             </button>
           </div>

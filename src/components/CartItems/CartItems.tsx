@@ -1,30 +1,17 @@
-import { useAppSelector, useAppDispatch } from 'redux/hooks';
-import {
-  selectAllCartItems,
-  addProductToCart,
-  removeProductFromCart,
-} from 'redux/slices/cartItems';
+import { useAppSelector } from 'redux/hooks';
+import { selectAllCartItems } from 'redux/slices/cartItems';
 import { selectProductEntities } from 'redux/slices/products';
+import CartItem from 'components/CartItem';
 
 function CartItems() {
   const cartItems = useAppSelector(selectAllCartItems);
   const products = useAppSelector(selectProductEntities);
-  const dispatch = useAppDispatch();
 
   return (
     <div>
       CartItems
       {cartItems.map((item) => {
-        const product = products[item.productId]!;
-        return (
-          <div>
-            {product.name} {product.price} {item.qty}
-            <button onClick={() => dispatch(removeProductFromCart(item))}>
-              -
-            </button>
-            <button onClick={() => dispatch(addProductToCart(item))}>+</button>
-          </div>
-        );
+        return <CartItem id={item.productId}></CartItem>;
       })}
       <div>
         Total Price:{' '}
