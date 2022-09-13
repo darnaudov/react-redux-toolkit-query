@@ -1,5 +1,10 @@
-import { createSlice, createEntityAdapter, current } from '@reduxjs/toolkit';
-import { RootState, AppDispatch } from 'redux/store';
+import {
+  createSlice,
+  createEntityAdapter,
+  current,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
+import { RootState } from 'redux/store';
 import api from 'api';
 
 export interface Product {
@@ -7,6 +12,14 @@ export interface Product {
   name: string;
   price: number;
 }
+
+export const fetchProducts = createAsyncThunk(
+  'products/fetchAll',
+  async (arg, thunkApi) => {
+    const products = await api.get('products');
+    return products.data;
+  }
+);
 
 export const productsAdapter = createEntityAdapter<Product>();
 const initialState = productsAdapter.getInitialState({
@@ -16,29 +29,21 @@ const initialState = productsAdapter.getInitialState({
 export const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {
-    productsLoading(state) {
-      if (state.loading === 'idle') {
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state, action) => {
         state.loading = 'pending';
-      }
-    },
-    productsReceived(state, action) {
-      if (state.loading === 'pending') {
-        state.loading = 'received';
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.loading = 'fulfilled';
         productsAdapter.setAll(state, action.payload);
-      }
-    },
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = 'rejected';
+      });
   },
 });
-
-export const { productsLoading, productsReceived } = productsSlice.actions;
-
-export async function fetchProducts(dispatch: AppDispatch) {
-  dispatch(productsLoading());
-  const products = await api.get('products');
-  dispatch(productsReceived(products.data));
-  return products.data;
-}
 
 export const {
   selectIds: selectProductIds,
