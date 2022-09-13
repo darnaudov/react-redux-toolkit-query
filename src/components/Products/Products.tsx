@@ -1,14 +1,25 @@
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { selectAllProducts } from 'redux/slices/products';
+import {
+  selectAllProducts,
+  selectProductsLoading,
+  fetchProducts,
+} from 'redux/slices/products';
 import { addProductToCart } from 'redux/slices/cartItems';
+import { useEffect } from 'react';
 
 function Products() {
   const products = useAppSelector(selectAllProducts);
+  const productsLoading = useAppSelector(selectProductsLoading);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts);
+  }, [dispatch]);
 
   return (
     <div>
       Products
+      {`Products state ${productsLoading}`}
       {products.map((product) => {
         return (
           <div key={product.id}>
