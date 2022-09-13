@@ -1,5 +1,8 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
+import api from 'api';
+
+const products = api.get('products');
 
 export interface Product {
   id: number;
