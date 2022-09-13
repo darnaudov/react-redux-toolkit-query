@@ -6,18 +6,29 @@ import {
 } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 import api from 'api';
+import { productEntity } from 'api/schema';
+import { normalize } from 'normalizr';
+import { Seller } from 'redux/slices/sellers';
 
 export interface Product {
   id: number;
   name: string;
   price: number;
+  seller: number;
 }
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchAll',
   async (arg, thunkApi) => {
     const products = await api.get('products');
-    return products.data;
+    const normalized = normalize<
+      any,
+      {
+        products: { [key: string]: Product };
+        seller: { [key: string]: Seller };
+      }
+    >(products.data, [productEntity]);
+    return normalized.entities;
   }
 );
 
@@ -37,7 +48,7 @@ export const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = 'fulfilled';
-        productsAdapter.setAll(state, action.payload);
+        productsAdapter.setAll(state, action.payload.products);
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = 'rejected';
