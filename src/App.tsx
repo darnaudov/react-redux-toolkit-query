@@ -1,18 +1,13 @@
 import './App.css';
 import { Provider } from 'react-redux';
 import { store } from 'redux/store';
-import Header from 'components/Header';
-import Products from 'components/Products';
-import CartItems from 'components/CartItems';
+import router from 'pages/router';
+import { RouterProvider } from 'react-router-dom';
 
 function App() {
   return (
     <Provider store={store}>
-      <div className="App">
-        <Header></Header>
-        <Products></Products>
-        <CartItems></CartItems>
-      </div>
+      <RouterProvider router={router}></RouterProvider>
     </Provider>
   );
 }

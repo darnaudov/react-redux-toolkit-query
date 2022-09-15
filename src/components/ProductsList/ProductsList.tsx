@@ -1,15 +1,11 @@
+import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import {
-  selectAllProducts,
-  selectProductsLoading,
-  fetchProducts,
-} from 'redux/slices/products';
+import { selectAllProducts, fetchProducts } from 'redux/slices/products';
 import { addProductToCart } from 'redux/slices/cartItems';
 import { useEffect } from 'react';
 
-function Products() {
+function ProductsList() {
   const products = useAppSelector(selectAllProducts);
-  const productsLoading = useAppSelector(selectProductsLoading);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -18,20 +14,25 @@ function Products() {
 
   return (
     <div>
-      Products
-      {`Products state ${productsLoading}`}
       {products.map((product) => {
         return (
           <div key={product.id}>
             {product.name} {product.price}
-            <button onClick={() => dispatch(addProductToCart(product.id))}>
-              Add
+            <button
+              onClick={() => dispatch(addProductToCart(product.id))}
+              style={{ marginLeft: '10px' }}
+            >
+              Add to Cart
             </button>
+            <Link to={`/products/${product.id}`} style={{ marginLeft: '10px' }}>
+              Edit
+            </Link>
           </div>
         );
       })}
+      <Link to={`/products/new`}>Add new Product</Link>
     </div>
   );
 }
 
-export default Products;
+export default ProductsList;
