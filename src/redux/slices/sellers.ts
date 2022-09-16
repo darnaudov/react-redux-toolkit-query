@@ -19,13 +19,14 @@ export const sellersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        sellersAdapter.upsertMany(state, action.payload.seller);
+        if (action.payload.seller) {
+          sellersAdapter.upsertMany(state, action.payload.seller);
+        }
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
-        sellersAdapter.upsertMany(state, action.payload.seller);
-      })
-      .addCase(updateProduct.fulfilled, (state, action) => {
-        sellersAdapter.upsertMany(state, action.payload.seller);
+        if (action.payload.seller) {
+          sellersAdapter.upsertMany(state, action.payload.seller);
+        }
       });
   },
 });

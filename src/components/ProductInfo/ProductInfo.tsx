@@ -24,15 +24,15 @@ function ProductInfo({ id }: Props) {
       >
         Add to Cart
       </button>
-      <Link to={`/products/${product.id}`} style={{ marginLeft: '10px' }}>
-        Edit
-      </Link>
       <button
         onClick={() => dispatch(removeProduct(product.id))}
         style={{ marginLeft: '10px' }}
       >
         Delete
       </button>
+      <Link to={`/products/${product.id}`} style={{ marginLeft: '10px' }}>
+        Edit
+      </Link>
     </div>
   );
 }
