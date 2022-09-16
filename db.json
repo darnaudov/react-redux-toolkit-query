@@ -26,15 +26,6 @@
         "id": 1,
         "name": "George"
       }
-    },
-    {
-      "id": 4,
-      "name": "Sofi stock",
-      "price": 100,
-      "seller": {
-        "id": 2,
-        "name": "Susan"
-      }
     }
   ]
 }

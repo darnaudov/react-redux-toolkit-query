@@ -34,8 +34,8 @@ export const fetchProducts = createAsyncThunk(
 
 export const fetchProductById = createAsyncThunk(
   'products/fetchById',
-  async (productId: number, thunkApi) => {
-    const product = await api.get(`products/${productId}`);
+  async (id: number, thunkApi) => {
+    const product = await api.get(`products/${id}`);
     const normalized = normalize<
       any,
       {
@@ -59,6 +59,14 @@ export const updateProduct = createAsyncThunk(
       }
     >(updatedProduct.data, productEntity);
     return normalized.entities;
+  }
+);
+
+export const removeProduct = createAsyncThunk(
+  'products/remove',
+  async (id: number, thunkApi) => {
+    await api.delete(`products/${id}`);
+    return id;
   }
 );
 
@@ -88,6 +96,9 @@ export const productsSlice = createSlice({
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
         productsAdapter.upsertMany(state, action.payload.product);
+      })
+      .addCase(removeProduct.fulfilled, (state, action) => {
+        productsAdapter.removeOne(state, action.payload);
       });
   },
 });
