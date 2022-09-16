@@ -46,10 +46,13 @@ export const cartItemsSlice = createSlice({
         }
       }
     },
+    clearCart: (state) => {
+      cartItemsAdapter.removeAll(state);
+    },
   },
 });
 
-export const { addProductToCart, removeProductFromCart } =
+export const { addProductToCart, removeProductFromCart, clearCart } =
   cartItemsSlice.actions;
 
 export const {

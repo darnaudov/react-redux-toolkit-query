@@ -22,8 +22,18 @@ function CartItem({ id }: Props) {
   return (
     <div key={id}>
       {product.name} {product.price} {cartItem.qty}
-      <button onClick={() => dispatch(removeProductFromCart(id))}>-</button>
-      <button onClick={() => dispatch(addProductToCart(id))}>+</button>
+      <button
+        onClick={() => dispatch(removeProductFromCart(id))}
+        style={{ marginLeft: '10px' }}
+      >
+        -
+      </button>
+      <button
+        onClick={() => dispatch(addProductToCart(id))}
+        style={{ marginLeft: '5px' }}
+      >
+        +
+      </button>
     </div>
   );
 }
