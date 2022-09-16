@@ -19,7 +19,12 @@ function Products() {
         {products.map((product) => {
           return <ProductInfo id={product.id} key={product.id}></ProductInfo>;
         })}
-        <Link to={`/products/new`}>Add new Product</Link>
+        <Link
+          to={`/products/new`}
+          style={{ marginTop: '10px', display: 'block' }}
+        >
+          Add new Product
+        </Link>
       </div>
     </>
   );

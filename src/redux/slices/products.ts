@@ -24,10 +24,40 @@ export const fetchProducts = createAsyncThunk(
     const normalized = normalize<
       any,
       {
-        products: { [key: string]: Product };
+        product: { [key: string]: Product };
         seller: { [key: string]: Seller };
       }
     >(products.data, [productEntity]);
+    return normalized.entities;
+  }
+);
+
+export const fetchProductById = createAsyncThunk(
+  'products/fetchById',
+  async (productId: number, thunkApi) => {
+    const product = await api.get(`products/${productId}`);
+    const normalized = normalize<
+      any,
+      {
+        product: { [key: string]: Product };
+        seller: { [key: string]: Seller };
+      }
+    >(product.data, productEntity);
+    return normalized.entities;
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  'products/update',
+  async (product: Partial<Product>, thunkApi) => {
+    const updatedProduct = await api.patch(`products/${product.id}`, product);
+    const normalized = normalize<
+      any,
+      {
+        product: { [key: string]: Product };
+        seller: { [key: string]: Seller };
+      }
+    >(updatedProduct.data, productEntity);
     return normalized.entities;
   }
 );
@@ -48,10 +78,16 @@ export const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = 'fulfilled';
-        productsAdapter.setAll(state, action.payload.products);
+        productsAdapter.upsertMany(state, action.payload.product);
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = 'rejected';
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        productsAdapter.upsertMany(state, action.payload.product);
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        productsAdapter.upsertMany(state, action.payload.product);
       });
   },
 });

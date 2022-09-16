@@ -1,5 +1,9 @@
 import { createEntityAdapter, createSlice, current } from '@reduxjs/toolkit';
-import { fetchProducts } from 'redux/slices/products';
+import {
+  fetchProducts,
+  fetchProductById,
+  updateProduct,
+} from 'redux/slices/products';
 
 export interface Seller {
   id: number;
@@ -13,9 +17,16 @@ export const sellersSlice = createSlice({
   initialState: sellersAdapter.getInitialState(),
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      sellersAdapter.setAll(state, action.payload.seller);
-    });
+    builder
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        sellersAdapter.upsertMany(state, action.payload.seller);
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        sellersAdapter.upsertMany(state, action.payload.seller);
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        sellersAdapter.upsertMany(state, action.payload.seller);
+      });
   },
 });
 

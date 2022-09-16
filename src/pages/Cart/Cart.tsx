@@ -25,11 +25,12 @@ function Cart() {
         {cartItems.map((item) => {
           return <CartItem id={item.productId}></CartItem>;
         })}
-        <div>Total Price: {totalPrice}</div>
+        <div style={{ marginTop: '5px' }}>Total Price: ${totalPrice}</div>
         <button
           onClick={() => {
             dispatch(clearCart());
           }}
+          style={{ marginTop: '10px' }}
         >
           Clear Cart
         </button>
