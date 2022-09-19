@@ -5,7 +5,7 @@ export function home() {
 }
 
 export function products() {
-  return 'products';
+  return '/products';
 }
 
 export function productsById(id: idType = ':id') {
@@ -17,5 +17,5 @@ export function productsNew() {
 }
 
 export function cart() {
-  return 'cart';
+  return '/cart';
 }
