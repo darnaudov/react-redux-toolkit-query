@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { selectAllProducts, fetchProducts } from 'redux/slices/products';
 import { useEffect } from 'react';
 import ProductInfo from 'components/ProductInfo';
+import * as paths from 'pages/paths';
 
 function Products() {
   const products = useAppSelector(selectAllProducts);
@@ -20,7 +21,7 @@ function Products() {
           return <ProductInfo id={product.id} key={product.id}></ProductInfo>;
         })}
         <Link
-          to={`/products/new`}
+          to={paths.productsNew()}
           style={{ marginTop: '10px', display: 'block' }}
         >
           Add new Product

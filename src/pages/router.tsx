@@ -2,7 +2,9 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
+  createMemoryRouter,
 } from 'react-router-dom';
+import * as paths from 'pages/paths';
 import MainLayout from './MainLayout';
 import Home from 'pages/Home';
 import Products from 'pages/Products';
@@ -12,19 +14,36 @@ import Cart from 'pages/Cart';
 import NotFound from 'pages/NotFound';
 import Error from 'pages/Error';
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-      <Route path="/" element={<MainLayout />} errorElement={<Error />}>
-        <Route index element={<Home />}></Route>
-        <Route path="products" element={<Products />}></Route>
-        <Route path="products/:id" element={<Product />}></Route>
-        <Route path="products/new" element={<NewProduct />}></Route>
-        <Route path="cart" element={<Cart />}></Route>
-        <Route path="*" element={<NotFound />}></Route>
-      </Route>
-    </>
-  )
+export const routes = createRoutesFromElements(
+  <>
+    <Route
+      path={paths.home()}
+      element={<MainLayout />}
+      errorElement={<Error />}
+    >
+      <Route index element={<Home />}></Route>
+      <Route path={paths.products()} element={<Products />}></Route>
+      <Route path={paths.productsById()} element={<Product />}></Route>
+      <Route path={paths.productsNew()} element={<NewProduct />}></Route>
+      <Route path={paths.cart()} element={<Cart />}></Route>
+      <Route path="*" element={<NotFound />}></Route>
+    </Route>
+  </>
 );
+
+export function setupMemoryRouter({
+  initialEntries,
+  initialIndex,
+}: {
+  initialEntries?: string[];
+  initialIndex?: number;
+}) {
+  return createMemoryRouter(routes, {
+    initialEntries,
+    initialIndex,
+  });
+}
+
+const router = createBrowserRouter(routes);
 
 export default router;

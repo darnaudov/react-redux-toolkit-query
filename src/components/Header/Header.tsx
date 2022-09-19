@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from 'redux/hooks';
 import { selectAllCartItems } from 'redux/slices/cartItems';
+import * as paths from 'pages/paths';
 
 function Header() {
   const cartItems = useAppSelector(selectAllCartItems);
@@ -17,13 +18,13 @@ function Header() {
   return (
     <nav style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
       <div>
-        <Link to="/">Home</Link>
+        <Link to={paths.home()}>Home</Link>
       </div>
       <div>
-        <Link to="/products">Products</Link>
+        <Link to={paths.products()}>Products</Link>
       </div>
       <div>
-        <Link to="/cart">Cart ({totalCartItems})</Link>
+        <Link to={paths.cart()}>Cart ({totalCartItems})</Link>
       </div>
     </nav>
   );

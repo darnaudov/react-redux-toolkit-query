@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { Link } from 'react-router-dom';
 import { selectProductById, removeProduct } from 'redux/slices/products';
 import { addProductToCart } from 'redux/slices/cartItems';
+import * as paths from 'pages/paths';
 
 interface Props {
   id: number;
@@ -16,7 +17,7 @@ function ProductInfo({ id }: Props) {
   }
 
   return (
-    <div key={product.id}>
+    <div key={product.id} data-testid="product">
       {product.name} {product.price}
       <button
         onClick={() => dispatch(addProductToCart(product.id))}
@@ -30,7 +31,7 @@ function ProductInfo({ id }: Props) {
       >
         Delete
       </button>
-      <Link to={`/products/${product.id}`} style={{ marginLeft: '10px' }}>
+      <Link to={paths.productsById(product.id)} style={{ marginLeft: '10px' }}>
         Edit
       </Link>
     </div>
