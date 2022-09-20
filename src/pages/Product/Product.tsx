@@ -33,7 +33,7 @@ function Product() {
 
   return (
     <>
-      <h1>Product {params.id}</h1>
+      <h1>Product {id}</h1>
       <div>
         Name:
         <input
