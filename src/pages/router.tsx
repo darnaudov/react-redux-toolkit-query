@@ -4,6 +4,7 @@ import {
   createRoutesFromElements,
   createMemoryRouter,
 } from 'react-router-dom';
+import { RouteObject } from 'react-router-dom';
 import * as paths from 'pages/paths';
 import MainLayout from './MainLayout';
 import Home from 'pages/Home';
@@ -32,13 +33,15 @@ export const routes = createRoutesFromElements(
 );
 
 export function setupMemoryRouter({
+  routes: customRoutes = routes,
   initialEntries,
   initialIndex,
 }: {
+  routes?: RouteObject[];
   initialEntries?: string[];
   initialIndex?: number;
 }) {
-  return createMemoryRouter(routes, {
+  return createMemoryRouter(customRoutes, {
     initialEntries,
     initialIndex,
   });

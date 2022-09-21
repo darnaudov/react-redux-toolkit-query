@@ -3,7 +3,11 @@ import { render } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
 import type { PreloadedState } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import { RouterProvider } from 'react-router-dom';
+import {
+  createRoutesFromElements,
+  RouterProvider,
+  Route,
+} from 'react-router-dom';
 import { setupStore } from 'redux/store';
 import type { AppStore, RootState } from 'redux/store';
 import { setupMemoryRouter } from 'pages/router';
@@ -14,6 +18,7 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   route?: string;
   initialEntries?: string[] | null;
   initialIndex?: number | null;
+  component?: JSX.Element;
 }
 
 export function renderWithStore(
@@ -42,6 +47,38 @@ export function renderRoute({
     const entries = initialEntries !== null ? initialEntries : ['/', route];
     const index = initialIndex !== null ? initialIndex : entries.length;
     const router = setupMemoryRouter({
+      initialEntries: entries,
+      initialIndex: index,
+    });
+    return (
+      <Provider store={store}>
+        <RouterProvider router={router}></RouterProvider>
+      </Provider>
+    );
+  }
+  return {
+    store,
+    ...render(<Wrapper />, { ...renderOptions }),
+  };
+}
+
+export function renderComponentAtRoute({
+  component,
+  preloadedState = {},
+  store = setupStore(preloadedState),
+  route = '/',
+  initialEntries = null,
+  initialIndex = null,
+  ...renderOptions
+}: ExtendedRenderOptions = {}) {
+  function Wrapper(): JSX.Element {
+    const entries = initialEntries !== null ? initialEntries : ['/', route];
+    const index = initialIndex !== null ? initialIndex : entries.length;
+    const routes = createRoutesFromElements(
+      <Route path={route} element={component}></Route>
+    );
+    const router = setupMemoryRouter({
+      routes,
       initialEntries: entries,
       initialIndex: index,
     });

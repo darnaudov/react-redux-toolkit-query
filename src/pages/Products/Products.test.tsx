@@ -1,26 +1,43 @@
-import {
-  fireEvent,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-  within,
-} from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import user from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import { renderRoute } from 'utils/test-utils';
+import { mockProducts } from 'mocks/mockData';
 
 test('Products page renders', () => {
   renderRoute({ route: '/products' });
-  const productsHeading = screen.getByRole('heading', {
-    name: /products/i,
-  });
-  expect(productsHeading).toBeInTheDocument();
+  expect(
+    screen.getByRole('heading', {
+      name: /products/i,
+    })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('link', {
+      name: /add new product/i,
+    })
+  ).toBeInTheDocument();
 });
 
 test('Products are fetched and rendered', async () => {
   renderRoute({ route: '/products' });
+  const productsCount = mockProducts.length;
   const products = await screen.findAllByTestId('product');
-  expect(products).toHaveLength(3);
+
+  expect(products).toHaveLength(productsCount);
+  expect(screen.getAllByRole('button', { name: /add to cart/i })).toHaveLength(
+    productsCount
+  );
+  expect(screen.getAllByRole('button', { name: /delete/i })).toHaveLength(
+    productsCount
+  );
+  expect(screen.getAllByRole('link', { name: /edit/i })).toHaveLength(
+    productsCount
+  );
+
+  for (let product of mockProducts) {
+    expect(
+      screen.getByText(new RegExp(`${product.name} ${product.price}`, 'i'))
+    ).toBeInTheDocument();
+  }
 });
 
 test('Product is added to cart when "Add to cart" button is pressed', async () => {
@@ -59,7 +76,7 @@ test('Product is deleted when "delete" button is pressed', async () => {
   expect(store.getState().products.ids).toHaveLength(2);
 });
 
-test('Add new product link works', async () => {
+test('Add new product link navigates to new product page', async () => {
   renderRoute({ route: '/products' });
   const addNewProductLink = screen.getByRole('link', {
     name: /add new product/i,
@@ -70,19 +87,3 @@ test('Add new product link works', async () => {
   });
   expect(newProductHeading).toBeInTheDocument();
 });
-
-// test('Edit product link works', async () => {
-//   renderRoute({ route: '/products' });
-//   const editProductLinks = await screen.findAllByRole('link', {
-//     name: /edit/i,
-//   });
-//   user.click(editProductLinks[0]);
-//   const priceInput = await screen.findByText(/price:/i);
-//   const textbox = await within(priceInput).findByDisplayValue(/1400/i);
-//   expect(textbox).toBeInTheDocument();
-
-//   // const newProductHeading = await screen.findByRole('heading', {
-//   //   name: /product/i,
-//   // });
-//   // expect(newProductHeading).toBeInTheDocument();
-// });
