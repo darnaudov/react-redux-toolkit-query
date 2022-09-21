@@ -2,9 +2,10 @@ import { screen, waitFor, within } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { renderRoute } from 'utils/test-utils';
 import { mockProducts } from 'mocks/mockData';
+import * as paths from 'pages/paths';
 
 test('Products page renders', () => {
-  renderRoute({ route: '/products' });
+  renderRoute({ route: paths.products() });
   expect(
     screen.getByRole('heading', {
       name: /products/i,
@@ -18,7 +19,7 @@ test('Products page renders', () => {
 });
 
 test('Products are fetched and rendered', async () => {
-  renderRoute({ route: '/products' });
+  renderRoute({ route: paths.products() });
   const productsCount = mockProducts.length;
   const products = await screen.findAllByTestId('product');
 
@@ -41,7 +42,7 @@ test('Products are fetched and rendered', async () => {
 });
 
 test('Product is added to cart when "Add to cart" button is pressed', async () => {
-  const { store } = renderRoute({ route: '/products' });
+  const { store } = renderRoute({ route: paths.products() });
   const products = await screen.findAllByTestId('product');
   const cartLink = screen.getByRole('link', {
     name: /cart \(0\)/i,
@@ -59,7 +60,7 @@ test('Product is added to cart when "Add to cart" button is pressed', async () =
 });
 
 test('Product is deleted when "delete" button is pressed', async () => {
-  const { store } = renderRoute({ route: '/products' });
+  const { store } = renderRoute({ route: paths.products() });
   const products = await screen.findAllByTestId('product');
   expect(products).toHaveLength(3);
   expect(store.getState().products.ids).toHaveLength(3);
@@ -77,7 +78,7 @@ test('Product is deleted when "delete" button is pressed', async () => {
 });
 
 test('Add new product link navigates to new product page', async () => {
-  renderRoute({ route: '/products' });
+  renderRoute({ route: paths.products() });
   const addNewProductLink = screen.getByRole('link', {
     name: /add new product/i,
   });

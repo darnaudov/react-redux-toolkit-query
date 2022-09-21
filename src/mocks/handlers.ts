@@ -9,22 +9,25 @@ export const handlers = [
   rest.get(`${serverBaseUrl}/products/1`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockProducts[0]));
   }),
-  rest.post(`${serverBaseUrl}/products`, (req, res, ctx) => {
+  rest.post(`${serverBaseUrl}/products`, async (req, res, ctx) => {
+    const { name, price } = await req.json();
     return res(
       ctx.status(200),
       ctx.json({
-        name: 'Suit',
-        price: 888,
+        name,
+        price,
         id: 4,
       })
     );
   }),
-  rest.patch(`${serverBaseUrl}/products/1`, (req, res, ctx) => {
+  rest.patch(`${serverBaseUrl}/products/1`, async (req, res, ctx) => {
+    const { name, price } = await req.json();
     return res(
       ctx.status(200),
       ctx.json({
         ...mockProducts[0],
-        price: 1000,
+        name,
+        price,
       })
     );
   }),

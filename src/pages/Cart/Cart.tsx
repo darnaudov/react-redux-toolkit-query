@@ -23,7 +23,7 @@ function Cart() {
       <h1>Cart</h1>
       <div>
         {cartItems.map((item) => {
-          return <CartItem id={item.productId}></CartItem>;
+          return <CartItem id={item.productId} key={item.productId}></CartItem>;
         })}
         <div style={{ marginTop: '5px' }}>Total Price: ${totalPrice}</div>
         <button

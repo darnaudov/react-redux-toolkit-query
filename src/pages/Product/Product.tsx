@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import {
@@ -16,6 +16,7 @@ function Product() {
   const id = parseInt(params.id);
   const product = useAppSelector((state) => selectProductById(state, id));
   const dispatch = useAppDispatch();
+  const areInitialValuesSet = useRef(false);
 
   useEffect(() => {
     dispatch(fetchProductById(id));
@@ -25,9 +26,10 @@ function Product() {
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
-    if (product) {
+    if (product && !areInitialValuesSet.current) {
       setName(product.name);
       setPrice(product.price);
+      areInitialValuesSet.current = true;
     }
   }, [product]);
 
@@ -35,9 +37,10 @@ function Product() {
     <>
       <h1>Product {id}</h1>
       <div>
-        Name:
+        <label htmlFor="name">Name: </label>
         <input
           type="text"
+          id="name"
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -47,12 +50,14 @@ function Product() {
       </div>
 
       <div>
-        Price:
+        <label htmlFor="price">Price: </label>
         <input
-          type="text"
+          type="number"
+          id="price"
           value={price}
           onChange={(e) => {
-            setPrice(parseInt(e.target.value));
+            const price = parseInt(e.target.value);
+            setPrice(Number.isNaN(price) ? 0 : price);
           }}
           style={{ marginLeft: '5px' }}
         ></input>
@@ -63,7 +68,7 @@ function Product() {
         }}
         style={{ marginTop: '10px' }}
       >
-        Update
+        Update product
       </button>
     </>
   );

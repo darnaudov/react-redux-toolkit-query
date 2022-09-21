@@ -20,7 +20,7 @@ function CartItem({ id }: Props) {
   }
 
   return (
-    <div key={id}>
+    <div key={id} data-testid="cart-item">
       {product.name} {product.price} {cartItem.qty}
       <button
         onClick={() => dispatch(removeProductFromCart(id))}

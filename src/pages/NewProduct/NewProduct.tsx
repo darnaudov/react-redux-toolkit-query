@@ -11,12 +11,17 @@ function NewProduct() {
     <>
       <h1>New Product</h1>
       <div>
-        Name:{' '}
-        <input value={name} onChange={(e) => setName(e.target.value)}></input>
+        <label htmlFor="name">Name: </label>
+        <input
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        ></input>
       </div>
       <div>
-        Price:{' '}
+        <label htmlFor="price">Price: </label>
         <input
+          id="price"
           value={price}
           onChange={(e) => setPrice(parseInt(e.target.value))}
         ></input>
