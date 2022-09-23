@@ -21,7 +21,7 @@ function CartItem({ id }: Props) {
 
   return (
     <div key={id} data-testid="cart-item">
-      {product.name} {product.price} {cartItem.qty}
+      {product.name} {product.price} x {cartItem.qty}
       <button
         onClick={() => dispatch(removeProductFromCart(id))}
         style={{ marginLeft: '10px' }}

@@ -27,7 +27,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve": "json-server --watch db.json --port 5000"
+    "serve": "json-server --watch db.json --port 5000",
+    "cypress": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^10.8.0",
     "msw": "^0.47.3"
   }
 }
