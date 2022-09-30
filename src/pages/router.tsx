@@ -5,6 +5,7 @@ import {
   createMemoryRouter,
 } from 'react-router-dom';
 import { RouteObject } from 'react-router-dom';
+import PrivateRoute from 'components/PrivateRoute';
 import * as paths from 'pages/paths';
 import MainLayout from './MainLayout';
 import Home from 'pages/Home';
@@ -23,7 +24,11 @@ export const routes = createRoutesFromElements(
     <Route path={paths.signUp()} element={<SignUp />}></Route>
     <Route
       path={paths.home()}
-      element={<MainLayout />}
+      element={
+        <PrivateRoute>
+          <MainLayout />
+        </PrivateRoute>
+      }
       errorElement={<Error />}
     >
       <Route index element={<Home />}></Route>

@@ -22,12 +22,10 @@ export const signUpUser = createAsyncThunk(
 );
 
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    store.dispatch({
-      type: signUpUser.fulfilled.type,
-      payload: user.providerData[0],
-    });
-  }
+  store.dispatch({
+    type: signUpUser.fulfilled.type,
+    payload: user ? user.providerData[0] : null,
+  });
 });
 
 type InitialStateType = UserInfo | null;
