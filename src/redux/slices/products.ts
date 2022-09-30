@@ -1,7 +1,6 @@
 import {
   createSlice,
   createEntityAdapter,
-  current,
   createAsyncThunk,
 } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';

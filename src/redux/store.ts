@@ -5,11 +5,13 @@ import {
   PreloadedState,
   combineReducers,
 } from '@reduxjs/toolkit';
+import userReducer from 'redux/slices/user';
 import productsReducer from 'redux/slices/products';
 import cartItemsReducer from 'redux/slices/cartItems';
 import sellersReducer from 'redux/slices/sellers';
 
 const rootReducer = combineReducers({
+  user: userReducer,
   products: productsReducer,
   cartItems: cartItemsReducer,
   sellers: sellersReducer,

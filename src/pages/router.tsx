@@ -14,9 +14,13 @@ import Product from 'pages/Product';
 import Cart from 'pages/Cart';
 import NotFound from 'pages/NotFound';
 import Error from 'pages/Error';
+import Login from 'pages/Login';
+import SignUp from './SignUp';
 
 export const routes = createRoutesFromElements(
   <>
+    <Route path={paths.login()} element={<Login />}></Route>
+    <Route path={paths.signUp()} element={<SignUp />}></Route>
     <Route
       path={paths.home()}
       element={<MainLayout />}

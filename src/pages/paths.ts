@@ -4,6 +4,14 @@ export function home() {
   return '/';
 }
 
+export function login() {
+  return '/login';
+}
+
+export function signUp() {
+  return '/signup';
+}
+
 export function products() {
   return '/products';
 }

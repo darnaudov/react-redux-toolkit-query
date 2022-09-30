@@ -1,9 +1,5 @@
-import { createEntityAdapter, createSlice, current } from '@reduxjs/toolkit';
-import {
-  fetchProducts,
-  fetchProductById,
-  updateProduct,
-} from 'redux/slices/products';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { fetchProducts, fetchProductById } from 'redux/slices/products';
 
 export interface Seller {
   id: number;
