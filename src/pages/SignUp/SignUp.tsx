@@ -1,24 +1,31 @@
-import { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { selectUser, signUpUser, selectUserLoading } from 'redux/slices/user';
+import { Loading } from 'redux/commonTypes';
 import * as paths from '../paths';
-import { selectUser, signUpUser } from 'redux/slices/user';
 
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const user = useAppSelector((state) => selectUser(state));
-
+  const userLoading = useAppSelector((state) => selectUserLoading(state));
   const onSubmit = useCallback(() => {
     if (email && password) {
       dispatch(signUpUser({ email, password }));
     }
   }, [email, password, dispatch]);
 
+  useEffect(() => {
+    if (user) {
+      navigate(paths.home());
+    }
+  }, [user, navigate]);
+
   return (
     <div>
-      {user ? user.email : 'not logged in'}
       Sign Up
       <div>
         <label htmlFor="email">Email: </label>
@@ -42,10 +49,12 @@ function SignUp() {
         ></input>
       </div>
       <div>
-        <button onClick={onSubmit}>Sign Up</button>
+        <button onClick={onSubmit} disabled={userLoading === Loading.pending}>
+          Sign Up
+        </button>
       </div>
       Already have an an account?
-      <Link to={paths.login()}>Login</Link>
+      <Link to={paths.logIn()}>Login</Link>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import api from 'api';
 import { productEntity } from 'api/schema';
 import { normalize } from 'normalizr';
 import { Seller } from 'redux/slices/sellers';
+import { Loading } from 'redux/commonTypes';
 
 export interface Product {
   id: number;
@@ -86,7 +87,7 @@ export const removeProduct = createAsyncThunk(
 
 export const productsAdapter = createEntityAdapter<Product>();
 const initialState = productsAdapter.getInitialState({
-  loading: 'idle',
+  loading: Loading.idle,
 });
 
 export const productsSlice = createSlice({
@@ -96,14 +97,14 @@ export const productsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state, action) => {
-        state.loading = 'pending';
+        state.loading = Loading.pending;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.loading = 'fulfilled';
+        state.loading = Loading.fulfilled;
         productsAdapter.upsertMany(state, action.payload.product);
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.loading = 'rejected';
+        state.loading = Loading.rejected;
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
         productsAdapter.upsertMany(state, action.payload.product);

@@ -10,7 +10,7 @@ function PrivateRoute({ children }: PropsWithChildren) {
   if (user) {
     return <>{children}</>;
   } else {
-    return <Navigate to={paths.login()}></Navigate>;
+    return <Navigate to={paths.logIn()}></Navigate>;
   }
 }
 

@@ -4,12 +4,16 @@ export function home() {
   return '/';
 }
 
-export function login() {
+export function signUp() {
+  return '/signup';
+}
+
+export function logIn() {
   return '/login';
 }
 
-export function signUp() {
-  return '/signup';
+export function resetPassword() {
+  return '/reset-password';
 }
 
 export function products() {
@@ -26,4 +30,12 @@ export function productsNew() {
 
 export function cart() {
   return '/cart';
+}
+
+export function profile() {
+  return '/profile';
+}
+
+export function updateProfile() {
+  return '/update-profile';
 }

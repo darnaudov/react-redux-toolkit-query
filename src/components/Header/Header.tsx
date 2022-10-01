@@ -7,7 +7,6 @@ import * as paths from 'pages/paths';
 function Header() {
   const cartItems = useAppSelector(selectAllCartItems);
   const [totalCartItems, setTotalCartItems] = useState(0);
-
   useEffect(() => {
     const total = cartItems.reduce((total, item) => {
       return total + item.qty;
@@ -25,6 +24,9 @@ function Header() {
       </div>
       <div>
         <Link to={paths.cart()}>Cart ({totalCartItems})</Link>
+      </div>
+      <div>
+        <Link to={paths.profile()}>Profile</Link>
       </div>
     </nav>
   );
