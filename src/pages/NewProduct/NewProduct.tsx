@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useAppDispatch } from 'redux/hooks';
-import { addProduct } from 'redux/slices/products';
+import { useAddProductMutation } from 'redux/slices/productsApi';
 
 function NewProduct() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
-  const dispatch = useAppDispatch();
+  const [addProduct] = useAddProductMutation();
 
   return (
     <>
@@ -13,6 +12,7 @@ function NewProduct() {
       <div>
         <label htmlFor="name">Name: </label>
         <input
+          type="text"
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -21,13 +21,18 @@ function NewProduct() {
       <div>
         <label htmlFor="price">Price: </label>
         <input
+          type="number"
           id="price"
           value={price}
-          onChange={(e) => setPrice(parseInt(e.target.value))}
+          onChange={(e) => {
+            const price = parseInt(e.target.value);
+            setPrice(Number.isNaN(price) ? 0 : price);
+          }}
+          style={{ marginLeft: '5px' }}
         ></input>
       </div>
       <button
-        onClick={() => dispatch(addProduct({ name, price }))}
+        onClick={() => addProduct({ name, price })}
         style={{ marginTop: '10px' }}
       >
         Add Product

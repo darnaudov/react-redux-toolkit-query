@@ -4,14 +4,14 @@ import {
   addProductToCart,
   removeProductFromCart,
 } from 'redux/slices/cartItems';
-import { selectProductById } from 'redux/slices/products';
+import { useGetProductQuery } from 'redux/slices/productsApi';
 
 interface Props {
   id: number;
 }
 
 function CartItem({ id }: Props) {
-  const product = useAppSelector((state) => selectProductById(state, id));
+  const { data: product } = useGetProductQuery(id);
   const cartItem = useAppSelector((state) => selectCartItemById(state, id));
   const dispatch = useAppDispatch();
 

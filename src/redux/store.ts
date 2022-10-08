@@ -5,6 +5,7 @@ import {
   PreloadedState,
   combineReducers,
 } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
 import {
   persistStore,
   persistReducer,
@@ -17,26 +18,25 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import userReducer from 'redux/slices/user';
-import productsReducer from 'redux/slices/products';
 import cartItemsReducer from 'redux/slices/cartItems';
-import sellersReducer from 'redux/slices/sellers';
+import { productsApi } from 'redux/slices/productsApi';
 
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: [productsApi.reducerPath],
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
-  products: productsReducer,
   cartItems: cartItemsReducer,
-  sellers: sellersReducer,
+  [productsApi.reducerPath]: productsApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
-  return configureStore({
+  const store = configureStore({
     reducer: persistedReducer,
     preloadedState,
     middleware: (getDefaultMiddleware) =>
@@ -44,8 +44,11 @@ export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }),
+      }).concat(productsApi.middleware),
   });
+
+  setupListeners(store.dispatch);
+  return store;
 };
 
 export const store = setupStore();

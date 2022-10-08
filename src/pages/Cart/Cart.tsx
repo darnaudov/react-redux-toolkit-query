@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { selectAllCartItems, clearCart } from 'redux/slices/cartItems';
-import { selectProductEntities } from 'redux/slices/products';
 import CartItem from 'components/CartItem';
+import { useGetProductsQuery } from 'redux/slices/productsApi';
 
 function Cart() {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector(selectAllCartItems);
-  const products = useAppSelector(selectProductEntities);
+  const { data: products } = useGetProductsQuery();
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    const totalPrice = cartItems.reduce((total, item) => {
-      const product = products[item.productId]!;
-      return total + item.qty * product.price;
-    }, 0);
-    setTotalPrice(totalPrice);
+    if (products && products.entities) {
+      const totalPrice = cartItems.reduce((total, item) => {
+        const product = products.entities[item.productId]!;
+        return total + item.qty * product.price;
+      }, 0);
+      setTotalPrice(totalPrice);
+    }
   }, [cartItems, products]);
 
   return (

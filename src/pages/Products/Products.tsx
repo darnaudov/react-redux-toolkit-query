@@ -1,24 +1,17 @@
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { selectAllProducts, fetchProducts } from 'redux/slices/products';
-import { useEffect } from 'react';
 import ProductInfo from 'components/ProductInfo';
 import * as paths from 'pages/paths';
+import { useGetProductsQuery } from 'redux/slices/productsApi';
 
 function Products() {
-  const products = useAppSelector(selectAllProducts);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  const { data: products } = useGetProductsQuery();
 
   return (
     <>
       <h1>Products</h1>
       <div>
-        {products.map((product) => {
-          return <ProductInfo id={product.id} key={product.id}></ProductInfo>;
+        {products?.ids?.map((productId) => {
+          return <ProductInfo id={+productId} key={productId}></ProductInfo>;
         })}
         <Link
           to={paths.productsNew()}

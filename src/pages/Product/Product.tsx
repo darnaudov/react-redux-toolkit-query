@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import {
-  selectProductById,
-  fetchProductById,
-  updateProduct,
-} from 'redux/slices/products';
+  useGetProductQuery,
+  useUpdateProductMutation,
+} from 'redux/slices/productsApi';
 
 type PageParams = {
   id: string;
@@ -14,16 +12,11 @@ type PageParams = {
 function Product() {
   const params = useParams<PageParams>() as PageParams;
   const id = parseInt(params.id);
-  const product = useAppSelector((state) => selectProductById(state, id));
-  const dispatch = useAppDispatch();
-  const areInitialValuesSet = useRef(false);
-
-  useEffect(() => {
-    dispatch(fetchProductById(id));
-  }, [id, dispatch]);
-
+  const { data: product } = useGetProductQuery(id);
+  const [updateProduct] = useUpdateProductMutation();
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
+  const areInitialValuesSet = useRef(false);
 
   useEffect(() => {
     if (product && !areInitialValuesSet.current) {
@@ -64,7 +57,7 @@ function Product() {
       </div>
       <button
         onClick={() => {
-          dispatch(updateProduct({ id, name, price }));
+          updateProduct({ id, name, price });
         }}
         style={{ marginTop: '10px' }}
       >

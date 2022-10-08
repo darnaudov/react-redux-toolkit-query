@@ -1,15 +1,23 @@
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useAppDispatch } from 'redux/hooks';
 import { Link } from 'react-router-dom';
-import { selectProductById, removeProduct } from 'redux/slices/products';
-import { addProductToCart } from 'redux/slices/cartItems';
+import {
+  addProductToCart,
+  clearCart,
+  clearProductFromCart,
+} from 'redux/slices/cartItems';
 import * as paths from 'pages/paths';
+import {
+  useGetProductQuery,
+  useRemoveProductMutation,
+} from 'redux/slices/productsApi';
 
 interface Props {
   id: number;
 }
 
 function ProductInfo({ id }: Props) {
-  const product = useAppSelector((state) => selectProductById(state, id));
+  const { data: product } = useGetProductQuery(id);
+  const [removeProduct] = useRemoveProductMutation();
   const dispatch = useAppDispatch();
 
   if (!product) {
@@ -26,7 +34,10 @@ function ProductInfo({ id }: Props) {
         Add to Cart
       </button>
       <button
-        onClick={() => dispatch(removeProduct(product.id))}
+        onClick={() => {
+          removeProduct(id);
+          dispatch(clearProductFromCart(id));
+        }}
         style={{ marginLeft: '10px' }}
       >
         Delete

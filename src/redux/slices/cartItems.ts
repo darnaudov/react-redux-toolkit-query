@@ -46,14 +46,21 @@ export const cartItemsSlice = createSlice({
         }
       }
     },
+    clearProductFromCart: (state, action: PayloadAction<number>) => {
+      cartItemsAdapter.removeOne(state, action.payload);
+    },
     clearCart: (state) => {
       cartItemsAdapter.removeAll(state);
     },
   },
 });
 
-export const { addProductToCart, removeProductFromCart, clearCart } =
-  cartItemsSlice.actions;
+export const {
+  addProductToCart,
+  removeProductFromCart,
+  clearProductFromCart,
+  clearCart,
+} = cartItemsSlice.actions;
 
 export const {
   selectAll: selectAllCartItems,
