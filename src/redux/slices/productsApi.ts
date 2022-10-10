@@ -53,6 +53,30 @@ export const productsApi = createApi({
       invalidatesTags: (result, error, arg) => [
         { type: productTag, id: arg.id },
       ],
+      async onQueryStarted({ id, ...update }, { dispatch, queryFulfilled }) {
+        if (id) {
+          const getProductUpdate = dispatch(
+            productsApi.util.updateQueryData('getProduct', id, (draft) => {
+              Object.assign(draft, update);
+            })
+          );
+          const getProductsUpdate = dispatch(
+            productsApi.util.updateQueryData(
+              'getProducts',
+              undefined,
+              (draft) => {
+                productsAdapter.updateOne(draft, { id, changes: update });
+              }
+            )
+          );
+          try {
+            await queryFulfilled;
+          } catch {
+            getProductUpdate.undo();
+            getProductsUpdate.undo();
+          }
+        }
+      },
     }),
     addProduct: builder.mutation<Product, Partial<Product>>({
       query: (product) => ({
@@ -68,7 +92,10 @@ export const productsApi = createApi({
         method: 'DELETE',
       }),
       invalidatesTags: (result, error, arg) => {
-        return [{type: productTag, id: arg.id}, { type: productTag, id: listTagId }];
+        return [
+          { type: productTag, id: arg.id },
+          { type: productTag, id: listTagId },
+        ];
       },
     }),
   }),
