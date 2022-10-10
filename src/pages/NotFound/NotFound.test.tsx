@@ -1,14 +1,11 @@
-// import { render, screen } from '@testing-library/react';
-// import NotFound from './NotFound';
+import { screen } from '@testing-library/react';
+import { renderRoute } from 'utils/test-utils';
 
-// test('NotFound page renders successfully', () => {
-//   render(<NotFound />);
-//   expect(
-//     screen.getByRole('heading', {
-//       name: /not found/i,
-//     })
-//   ).toBeInTheDocument();
-// });
-
-// TODO Temp
-export {};
+test('NotFound page renders successfully', () => {
+  renderRoute({ route: '/not-existing-route' });
+  expect(
+    screen.getByRole('heading', {
+      name: /not found/i,
+    })
+  ).toBeInTheDocument();
+});

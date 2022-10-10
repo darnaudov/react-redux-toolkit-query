@@ -67,7 +67,7 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
-type UserState = {
+export type UserType = {
   loading: Loading;
   data: UserInfo | null;
 };
@@ -77,7 +77,7 @@ const userSlice = createSlice({
   initialState: {
     loading: Loading.idle,
     data: null,
-  } as UserState,
+  } as UserType,
   reducers: {},
   extraReducers: (builder) => {
     builder

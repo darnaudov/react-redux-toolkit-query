@@ -1,3 +1,17 @@
+import { Loading } from 'redux/commonTypes';
+
+export const mockUser = {
+  loading: Loading.fulfilled,
+  data: {
+    providerId: 'password',
+    uid: 'dummyemail@gmail.com',
+    displayName: null,
+    email: 'dummyemail@gmail.com',
+    phoneNumber: null,
+    photoURL: null,
+  },
+};
+
 export const mockProducts = [
   {
     id: 1,

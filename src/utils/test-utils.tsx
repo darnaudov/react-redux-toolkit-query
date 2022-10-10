@@ -11,9 +11,12 @@ import {
 import { setupStore } from 'redux/store';
 import type { AppStore, RootState } from 'redux/store';
 import { setupMemoryRouter } from 'pages/router';
+import { mockUser } from 'mocks/mockData';
+import { UserType } from 'redux/slices/user';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>;
+  preloadedUser?: UserType;
   store?: AppStore;
   route?: string;
   initialEntries?: string[] | null;
@@ -32,11 +35,13 @@ export function renderWithStore(
   function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
     return <Provider store={store}>{children}</Provider>;
   }
+
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }
 
 export function renderRoute({
-  preloadedState = {},
+  preloadedUser = mockUser,
+  preloadedState = { user: preloadedUser },
   store = setupStore(preloadedState),
   route = '/',
   initialEntries = null,
@@ -50,12 +55,14 @@ export function renderRoute({
       initialEntries: entries,
       initialIndex: index,
     });
+
     return (
       <Provider store={store}>
         <RouterProvider router={router}></RouterProvider>
       </Provider>
     );
   }
+
   return {
     store,
     ...render(<Wrapper />, { ...renderOptions }),
@@ -82,12 +89,14 @@ export function renderComponentAtRoute({
       initialEntries: entries,
       initialIndex: index,
     });
+
     return (
       <Provider store={store}>
         <RouterProvider router={router}></RouterProvider>
       </Provider>
     );
   }
+
   return {
     store,
     ...render(<Wrapper />, { ...renderOptions }),
