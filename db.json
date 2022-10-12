@@ -2,13 +2,13 @@
   "products": [
     {
       "id": 1,
-      "name": "MacBook",
+      "name": "Mac Book",
       "price": 1400
     },
     {
       "id": 2,
       "name": "Old Car",
-      "price": 240
+      "price": 2400
     },
     {
       "id": 3,
