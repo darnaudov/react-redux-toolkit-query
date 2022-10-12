@@ -1,39 +1,52 @@
-// import { renderRoute } from 'utils/test-utils';
-// import * as paths from 'pages/paths';
-// import { screen, waitFor } from '@testing-library/react';
-// import user from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
+import user from '@testing-library/user-event';
+import { renderRoute } from 'utils/test-utils';
+import { productsApi, selectAllProducts } from 'redux/slices/productsApi';
+import { mockProducts } from 'mocks/mockData';
+import * as paths from 'pages/paths';
 
-// test('New product page is rendered', () => {
-//   renderRoute({ route: paths.productsNew() });
-//   expect(
-//     screen.getByRole('heading', { name: /new product/i })
-//   ).toBeInTheDocument();
-//   expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
-//   expect(screen.getByLabelText(/price/i)).toBeInTheDocument();
-//   expect(
-//     screen.getByRole('button', { name: /add product/i })
-//   ).toBeInTheDocument();
-// });
+test('New product page is rendered', () => {
+  renderRoute({ route: paths.productsNew() });
+  expect(
+    screen.getByRole('heading', { name: /new product/i })
+  ).toBeInTheDocument();
+  expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/price/i)).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: /add product/i })
+  ).toBeInTheDocument();
+});
 
-// test('New product is added to the store', async () => {
-//   const { store } = renderRoute({ route: paths.productsNew() });
+test('New product is added to the store', async () => {
+  const { store } = renderRoute({ route: paths.productsNew() });
 
-//   user.type(screen.getByLabelText(/name/i), 'New product');
-//   user.type(screen.getByLabelText(/price/i), '12345');
-//   user.click(screen.getByRole('button', { name: /add product/i }));
+  act(() => {
+    store.dispatch(productsApi.endpoints.getProducts.initiate());
+  });
+  await waitFor(() => {
+    expect(selectAllProducts(store.getState())).toHaveLength(
+      mockProducts.length
+    );
+  });
 
-//   expect(store.getState().products.ids).toHaveLength(0);
-//   await waitFor(() => {
-//     expect(store.getState().products.ids).toHaveLength(1);
-//   });
+  const name = 'New product';
+  const price = '12345';
 
-//   const productsArr = Object.values(store.getState().products.entities);
-//   expect(productsArr).toEqual(
-//     expect.arrayContaining([
-//       expect.objectContaining({ name: 'New product', price: 12345 }),
-//     ])
-//   );
-// });
+  user.type(screen.getByLabelText(/name/i), name);
+  user.type(screen.getByLabelText(/price/i), price);
+  user.click(screen.getByRole('button', { name: /add product/i }));
 
-// TODO Temp
-export {};
+  await waitFor(() => {
+    expect(selectAllProducts(store.getState())).toHaveLength(
+      mockProducts.length + 1
+    );
+  });
+
+  const products = selectAllProducts(store.getState());
+  expect(products).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({ name, price: parseInt(price) }),
+    ])
+  );
+});

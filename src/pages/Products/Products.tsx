@@ -10,9 +10,13 @@ function Products() {
     <>
       <h1>Products</h1>
       <div>
-        {products?.ids?.map((productId) => {
-          return <ProductInfo id={+productId} key={productId}></ProductInfo>;
-        })}
+        {products &&
+          products.entities &&
+          Object.values(products?.entities).map((product) => {
+            return product ? (
+              <ProductInfo product={product} key={product.id}></ProductInfo>
+            ) : null;
+          })}
         <Link
           to={paths.productsNew()}
           style={{ marginTop: '10px', display: 'block' }}

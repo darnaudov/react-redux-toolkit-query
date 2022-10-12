@@ -1,22 +1,14 @@
 import { useAppDispatch } from 'redux/hooks';
 import { Link } from 'react-router-dom';
-import {
-  addProductToCart,
-  clearCart,
-  clearProductFromCart,
-} from 'redux/slices/cartItems';
+import { addProductToCart, clearProductFromCart } from 'redux/slices/cartItems';
 import * as paths from 'pages/paths';
-import {
-  useGetProductQuery,
-  useRemoveProductMutation,
-} from 'redux/slices/productsApi';
+import { useRemoveProductMutation, Product } from 'redux/slices/productsApi';
 
 interface Props {
-  id: number;
+  product: Product;
 }
 
-function ProductInfo({ id }: Props) {
-  const { data: product } = useGetProductQuery(id);
+function ProductInfo({ product }: Props) {
   const [removeProduct] = useRemoveProductMutation();
   const dispatch = useAppDispatch();
 
@@ -35,8 +27,8 @@ function ProductInfo({ id }: Props) {
       </button>
       <button
         onClick={() => {
-          removeProduct(id);
-          dispatch(clearProductFromCart(id));
+          removeProduct(product.id);
+          dispatch(clearProductFromCart(product.id));
         }}
         style={{ marginLeft: '10px' }}
       >

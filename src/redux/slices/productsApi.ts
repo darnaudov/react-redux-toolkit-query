@@ -1,5 +1,10 @@
-import { createEntityAdapter, EntityState } from '@reduxjs/toolkit';
+import {
+  createEntityAdapter,
+  createSelector,
+  EntityState,
+} from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { RootState } from 'redux/store';
 import { serverBaseUrl } from 'api';
 
 export interface Product {
@@ -9,6 +14,7 @@ export interface Product {
 }
 
 const productsAdapter = createEntityAdapter<Product>();
+const initialState = productsAdapter.getInitialState();
 
 const productTag = 'Product';
 const listTagId = 'List';
@@ -34,10 +40,7 @@ export const productsApi = createApi({
         return [{ type: productTag, id: listTagId }];
       },
       transformResponse: (response: Product[]) => {
-        return productsAdapter.addMany(
-          productsAdapter.getInitialState(),
-          response
-        );
+        return productsAdapter.addMany(initialState, response);
       },
     }),
     getProduct: builder.query<Product, number>({
@@ -108,3 +111,14 @@ export const {
   useRemoveProductMutation,
   useUpdateProductMutation,
 } = productsApi;
+
+export const selectProductsResult = productsApi.endpoints.getProducts.select();
+const selectProductsData = createSelector(
+  selectProductsResult,
+  (productsResult) => productsResult.data
+);
+
+export const { selectAll: selectAllProducts, selectById: selectProductById } =
+  productsAdapter.getSelectors(
+    (state: RootState) => selectProductsData(state) ?? initialState
+  );
