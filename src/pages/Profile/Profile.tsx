@@ -12,15 +12,16 @@ function Profile() {
   }, [dispatch]);
 
   return (
-    <div>
+    <>
+      <h1>Profile</h1>
       <div>Email: {user?.email}</div>
-      <div>
+      <div style={{ marginTop: '10px' }}>
         <Link to={paths.updateProfile()}>Update Profile</Link>
       </div>
-      <div>
+      <div style={{ marginTop: '10px' }}>
         <button onClick={onLogOut}>Log out</button>
       </div>
-    </div>
+    </>
   );
 }
 

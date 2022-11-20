@@ -7,7 +7,7 @@ function Home() {
   return (
     <>
       <h1>Home</h1>
-      <div>Wellcome {user?.email}</div>
+      <div>Welcome {user?.email}</div>
     </>
   );
 }

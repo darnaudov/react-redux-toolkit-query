@@ -26,7 +26,7 @@ function SignUp() {
 
   return (
     <div>
-      Sign Up
+      <h1>Sign Up</h1>
       <div>
         <label htmlFor="email">Email: </label>
         <input
@@ -48,13 +48,17 @@ function SignUp() {
           }}
         ></input>
       </div>
-      <div>
+      <div style={{ marginTop: '10px' }}>
         <button onClick={onSubmit} disabled={userLoading === Loading.pending}>
           Sign Up
         </button>
       </div>
-      Already have an an account?
-      <Link to={paths.logIn()}>Login</Link>
+      <div style={{ marginTop: '10px' }}>
+        Already have an account?
+        <Link to={paths.logIn()} style={{ marginLeft: '5px' }}>
+          Login
+        </Link>
+      </div>
     </div>
   );
 }

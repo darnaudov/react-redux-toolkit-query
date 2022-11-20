@@ -13,8 +13,8 @@ function UpdateProfile() {
   }, [email, password, dispatch]);
 
   return (
-    <div>
-      Update Profile
+    <>
+      <h1>Update Profile</h1>
       <div>
         <label htmlFor="email">Email: </label>
         <input
@@ -36,10 +36,10 @@ function UpdateProfile() {
           }}
         ></input>
       </div>
-      <div>
+      <div style={{ marginTop: '10px' }}>
         <button onClick={onSubmit}>Update</button>
       </div>
-    </div>
+    </>
   );
 }
 

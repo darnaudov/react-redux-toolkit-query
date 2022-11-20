@@ -19,7 +19,7 @@ describe('Product cart', () => {
         cy.contains(/login/i).click();
 
         cy.contains(/home/i);
-        cy.contains(new RegExp(`wellcome ${user.email}`, 'i'));
+        cy.contains(new RegExp(`welcome ${user.email}`, 'i'));
         cy.contains(/products/i).click();
         cy.url().should('include', '/products');
 

@@ -6,7 +6,8 @@ import {
 } from 'react-router-dom';
 import { RouteObject } from 'react-router-dom';
 import PrivateRoute from 'components/PrivateRoute';
-import MainLayout from './MainLayout';
+import MainPrivateLayout from './MainPrivateLayout';
+import MainPublicLayout from './MainPublicLayout';
 import Home from 'pages/Home';
 import Products from 'pages/Products';
 import NewProduct from 'pages/NewProduct';
@@ -23,14 +24,17 @@ import * as paths from 'pages/paths';
 
 export const routes = createRoutesFromElements(
   <>
-    <Route path={paths.signUp()} element={<SignUp />}></Route>
-    <Route path={paths.logIn()} element={<Login />}></Route>
-    <Route path={paths.resetPassword()} element={<ResetPassword />}></Route>
+    <Route element={<MainPublicLayout />}>
+      <Route path={paths.signUp()} element={<SignUp />}></Route>
+      <Route path={paths.logIn()} element={<Login />}></Route>
+      <Route path={paths.resetPassword()} element={<ResetPassword />}></Route>
+    </Route>
+
     <Route
       path={paths.home()}
       element={
         <PrivateRoute>
-          <MainLayout />
+          <MainPrivateLayout />
         </PrivateRoute>
       }
       errorElement={<Error />}

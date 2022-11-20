@@ -11,6 +11,6 @@ test('Home page renders successfully', () => {
     })
   ).toBeInTheDocument();
   expect(
-    screen.getByText(new RegExp(`wellcome ${mockUser.data.email}`, 'i'))
+    screen.getByText(new RegExp(`welcome ${mockUser.data.email}`, 'i'))
   ).toBeInTheDocument();
 });

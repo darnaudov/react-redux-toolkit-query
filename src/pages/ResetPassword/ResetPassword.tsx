@@ -15,7 +15,7 @@ function ResetPassword() {
 
   return (
     <div>
-      Reset Password
+      <h1>Reset Password</h1>
       <div>
         <label htmlFor="email">Email: </label>
         <input
@@ -26,10 +26,10 @@ function ResetPassword() {
           }}
         ></input>
       </div>
-      <div>
+      <div style={{ marginTop: '10px' }}>
         <button onClick={onSubmit}>Reset Password</button>
       </div>
-      <div>
+      <div style={{ marginTop: '10px' }}>
         <Link to={paths.logIn()}>Login</Link>
       </div>
       <div>
