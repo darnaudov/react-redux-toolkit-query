@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAddProductMutation } from 'redux/slices/productsApi';
+import { Button } from '@mui/material';
 
 function NewProduct() {
   const [name, setName] = useState('');
@@ -31,12 +32,13 @@ function NewProduct() {
           style={{ marginLeft: '5px' }}
         ></input>
       </div>
-      <button
+      <Button
+        variant="contained"
         onClick={() => addProduct({ name, price })}
         style={{ marginTop: '10px' }}
       >
         Add Product
-      </button>
+      </Button>
     </>
   );
 }

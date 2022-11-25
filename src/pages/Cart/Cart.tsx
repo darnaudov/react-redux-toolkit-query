@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { selectAllCartItems, clearCart } from 'redux/slices/cartItems';
 import CartItem from 'components/CartItem';
+import { Button } from '@mui/material';
 import { useGetProductsQuery } from 'redux/slices/productsApi';
 
 function Cart() {
@@ -28,14 +29,15 @@ function Cart() {
           return <CartItem id={item.productId} key={item.productId}></CartItem>;
         })}
         <div style={{ marginTop: '5px' }}>Total Price: ${totalPrice}</div>
-        <button
+        <Button
           onClick={() => {
             dispatch(clearCart());
           }}
-          style={{ marginTop: '10px' }}
+          color="error"
+          sx={{ marginTop: '10px' }}
         >
           Clear Cart
-        </button>
+        </Button>
       </div>
     </>
   );

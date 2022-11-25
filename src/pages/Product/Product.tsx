@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Button } from '@mui/material';
 import {
   useGetProductQuery,
   useUpdateProductMutation,
@@ -55,14 +56,15 @@ function Product() {
           style={{ marginLeft: '5px' }}
         ></input>
       </div>
-      <button
+      <Button
+        variant="contained"
         onClick={() => {
           updateProduct({ id, name, price });
         }}
         style={{ marginTop: '10px' }}
       >
         Update product
-      </button>
+      </Button>
     </>
   );
 }

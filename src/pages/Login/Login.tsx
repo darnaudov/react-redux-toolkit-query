@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Button, Link } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import * as paths from '../paths';
 import { loginUser, selectUser, selectUserLoading } from 'redux/slices/user';
@@ -49,18 +50,22 @@ function Login() {
         ></input>
       </div>
       <div style={{ marginTop: '10px' }}>
-        <button onClick={onSubmit} disabled={userLoading === Loading.pending}>
+        <Button
+          variant="contained"
+          onClick={onSubmit}
+          disabled={userLoading === Loading.pending}
+        >
           Login
-        </button>
+        </Button>
       </div>
       <div style={{ marginTop: '10px' }}>
         Don't have an account?
-        <Link to={paths.signUp()} style={{ marginLeft: '5px' }}>
+        <Link href={paths.signUp()} style={{ marginLeft: '5px' }}>
           Sign up
         </Link>
       </div>
       <div>
-        <Link to={paths.resetPassword()}>Forgot password?</Link>
+        <Link href={paths.resetPassword()}>Forgot password?</Link>
       </div>
     </div>
   );

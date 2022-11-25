@@ -1,5 +1,5 @@
 import { useAppDispatch } from 'redux/hooks';
-import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 import { addProductToCart, clearProductFromCart } from 'redux/slices/cartItems';
 import * as paths from 'pages/paths';
 import { useRemoveProductMutation, Product } from 'redux/slices/productsApi';
@@ -19,13 +19,26 @@ function ProductInfo({ product }: Props) {
   return (
     <div key={product.id} data-testid="product">
       {product.name} {product.price}
-      <button
+      <Button
+        variant="outlined"
+        size="small"
         onClick={() => dispatch(addProductToCart(product.id))}
         style={{ marginLeft: '10px' }}
       >
         Add to Cart
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="outlined"
+        size="small"
+        href={paths.productsById(product.id)}
+        style={{ marginLeft: '10px' }}
+      >
+        Edit
+      </Button>
+      <Button
+        variant="outlined"
+        size="small"
+        color="error"
         onClick={() => {
           removeProduct(product.id);
           dispatch(clearProductFromCart(product.id));
@@ -33,10 +46,7 @@ function ProductInfo({ product }: Props) {
         style={{ marginLeft: '10px' }}
       >
         Delete
-      </button>
-      <Link to={paths.productsById(product.id)} style={{ marginLeft: '10px' }}>
-        Edit
-      </Link>
+      </Button>
     </div>
   );
 }

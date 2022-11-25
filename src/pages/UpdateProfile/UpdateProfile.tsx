@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useAppDispatch } from 'redux/hooks';
 import { updateProfile } from 'redux/slices/user';
+import { Button } from '@mui/material';
 
 function UpdateProfile() {
   const [email, setEmail] = useState('');
@@ -37,7 +38,9 @@ function UpdateProfile() {
         ></input>
       </div>
       <div style={{ marginTop: '10px' }}>
-        <button onClick={onSubmit}>Update</button>
+        <Button variant="contained" onClick={onSubmit}>
+          Update
+        </Button>
       </div>
     </>
   );

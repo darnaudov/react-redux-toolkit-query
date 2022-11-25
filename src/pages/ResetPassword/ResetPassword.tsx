@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Button, Link } from '@mui/material';
 import { useAppDispatch } from 'redux/hooks';
 import * as paths from '../paths';
 import { resetPassword } from 'redux/slices/user';
@@ -27,13 +27,15 @@ function ResetPassword() {
         ></input>
       </div>
       <div style={{ marginTop: '10px' }}>
-        <button onClick={onSubmit}>Reset Password</button>
+        <Button variant="contained" onClick={onSubmit}>
+          Reset Password
+        </Button>
       </div>
       <div style={{ marginTop: '10px' }}>
-        <Link to={paths.logIn()}>Login</Link>
+        <Link href={paths.logIn()}>Login</Link>
       </div>
       <div>
-        <Link to={paths.signUp()}>Need an account?</Link>
+        <Link href={paths.signUp()}>Need an account?</Link>
       </div>
     </div>
   );

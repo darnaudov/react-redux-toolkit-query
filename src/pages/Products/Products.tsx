@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@mui/material';
 import ProductInfo from 'components/ProductInfo';
 import * as paths from 'pages/paths';
 import { useGetProductsQuery } from 'redux/slices/productsApi';
@@ -18,7 +18,7 @@ function Products() {
             ) : null;
           })}
         <Link
-          to={paths.productsNew()}
+          href={paths.productsNew()}
           style={{ marginTop: '10px', display: 'block' }}
         >
           Add new Product
