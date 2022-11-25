@@ -16,7 +16,7 @@ describe('Product cart', () => {
         cy.url().should('include', '/login');
         cy.contains(/email/i).type(user.email);
         cy.contains(/password/i).type(user.password);
-        cy.contains(/login/i).click();
+        cy.contains('button', /login/i).click();
 
         cy.contains(/home/i);
         cy.contains(new RegExp(`welcome ${user.email}`, 'i'));
