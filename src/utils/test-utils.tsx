@@ -10,6 +10,8 @@ import {
 } from 'react-router-dom';
 import { setupStore } from 'redux/store';
 import type { AppStore, RootState } from 'redux/store';
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from 'mui/theme';
 import { setupMemoryRouter } from 'pages/router';
 import { mockUser } from 'mocks/mockData';
 import { UserType } from 'redux/slices/user';
@@ -58,7 +60,9 @@ export function renderRoute({
 
     return (
       <Provider store={store}>
-        <RouterProvider router={router}></RouterProvider>
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router}></RouterProvider>
+        </ThemeProvider>
       </Provider>
     );
   }
@@ -92,7 +96,9 @@ export function renderComponentAtRoute({
 
     return (
       <Provider store={store}>
-        <RouterProvider router={router}></RouterProvider>
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router}></RouterProvider>
+        </ThemeProvider>
       </Provider>
     );
   }

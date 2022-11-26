@@ -42,8 +42,8 @@ test('Cart items are added and displayed on the page', async () => {
     expect(screen.getAllByTestId('cart-item')).toHaveLength(3);
   });
 
-  expect(screen.getAllByRole('button', { name: /\-/i })).toHaveLength(3);
-  expect(screen.getAllByRole('button', { name: /\+/i })).toHaveLength(3);
+  expect(screen.getAllByTestId('RemoveIcon')).toHaveLength(3);
+  expect(screen.getAllByTestId('AddIcon')).toHaveLength(3);
   expect(screen.queryByText(/total price: \$0/i)).not.toBeInTheDocument();
 
   for (let product of mockProducts) {
